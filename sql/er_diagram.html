@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER-диаграмма — Учусь.РФ</title>
+    <style>
+        body { font-family: Inter, Arial, sans-serif; background: #dee2e6; margin: 0; padding: 24px; color: #1a1a2e; }
+        h1 { color: #0d47a1; text-align: center; }
+        .diagram { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; max-width: 1100px; margin: 32px auto; }
+        .entity { background: #fff; border: 2px solid #007bff; border-radius: 12px; min-width: 220px; box-shadow: 0 8px 24px rgba(13,71,161,.12); }
+        .entity h2 { margin: 0; padding: 12px 16px; background: #007bff; color: #fff; font-size: 16px; border-radius: 10px 10px 0 0; }
+        .entity ul { list-style: none; margin: 0; padding: 12px 16px 16px; font-size: 14px; }
+        .entity li { padding: 4px 0; border-bottom: 1px solid #dee2e6; }
+        .entity li:last-child { border-bottom: none; }
+        .pk { color: #0d47a1; font-weight: 700; }
+        .fk { color: #007bff; }
+        .relations { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; }
+        .relations h3 { color: #0d47a1; }
+        .relations p { margin: 8px 0; font-size: 15px; }
+    </style>
+</head>
+<body>
+    <h1>ER-диаграмма информационной системы «Учусь.РФ»</h1>
+    <div class="diagram">
+        <div class="entity">
+            <h2>users</h2>
+            <ul>
+                <li><span class="pk">id</span> — PK</li>
+                <li>login — UNIQUE</li>
+                <li>password</li>
+                <li>full_name</li>
+                <li>phone</li>
+                <li>email</li>
+                <li>created_at</li>
+            </ul>
+        </div>
+        <div class="entity">
+            <h2>courses</h2>
+            <ul>
+                <li><span class="pk">id</span> — PK</li>
+                <li>name</li>
+            </ul>
+        </div>
+        <div class="entity">
+            <h2>applications</h2>
+            <ul>
+                <li><span class="pk">id</span> — PK</li>
+                <li><span class="fk">user_id</span> — FK → users</li>
+                <li><span class="fk">course_id</span> — FK → courses</li>
+                <li>start_date</li>
+                <li>payment_method</li>
+                <li>status</li>
+                <li>created_at</li>
+            </ul>
+        </div>
+        <div class="entity">
+            <h2>reviews</h2>
+            <ul>
+                <li><span class="pk">id</span> — PK</li>
+                <li><span class="fk">application_id</span> — FK → applications</li>
+                <li><span class="fk">user_id</span> — FK → users</li>
+                <li>rating</li>
+                <li>text</li>
+                <li>created_at</li>
+            </ul>
+        </div>
+    </div>
+    <div class="relations">
+        <h3>Связи между сущностями</h3>
+        <p>users (1) — (N) applications — один пользователь может подать несколько заявок</p>
+        <p>courses (1) — (N) applications — один курс может быть выбран в нескольких заявках</p>
+        <p>applications (1) — (0..1) reviews — к каждой заявке допускается один отзыв после смены статуса</p>
+        <p>users (1) — (N) reviews — пользователь может оставить отзывы по своим заявкам</p>
+    </div>
+</body>
+</html>
