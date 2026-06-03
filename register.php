@@ -68,7 +68,9 @@ $bodyClass = 'page-auth';
 require __DIR__ . '/includes/header.php';
 ?>
 <section class="card auth-card slide-up">
-    <h2>Регистрация</h2>
+    <div class="card-head">
+        <h2>Регистрация</h2>
+    </div>
     <p class="subtitle">Создайте аккаунт для записи на курсы</p>
     <form method="post" class="form" novalidate>
         <div class="field">
@@ -103,6 +105,6 @@ require __DIR__ . '/includes/header.php';
         </div>
         <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
     </form>
-    <p class="auth-switch">Уже есть аккаунт? <a href="/login.php">Вход</a></p>
+    <p class="auth-switch">Уже зарегистрированы? <a href="/login.php">Вход</a></p>
 </section>
 <?php require __DIR__ . '/includes/footer.php'; ?>

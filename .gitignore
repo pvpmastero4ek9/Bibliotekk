@@ -1,3 +1,7 @@
 /data/*.db
 /data/*.db-journal
 .cursor/
+_tz_extract/
+_tz_pdf.txt
+_tz_m2/
+_tz_search/

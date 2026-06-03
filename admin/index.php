@@ -17,11 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['application_id'], $_P
     if (in_array($status, $allowed, true)) {
         $stmt = $db->prepare('UPDATE applications SET status = ? WHERE id = ?');
         $stmt->execute([$status, $applicationId]);
-        $toast = 'Статус заявки #' . $applicationId . ' обновлен';
+        $toast = 'Статус заявки #' . $applicationId . ' изменён на «' . $status . '»';
     }
 }
 
+$courses = $db->query('SELECT id, name FROM courses ORDER BY id')->fetchAll();
 $statusFilter = $_GET['status'] ?? '';
+$courseFilter = (string)($_GET['course_id'] ?? '');
 $sort = $_GET['sort'] ?? 'created_at';
 $order = strtoupper($_GET['order'] ?? 'DESC') === 'ASC' ? 'ASC' : 'DESC';
 $page = max(1, (int)($_GET['page'] ?? 1));
@@ -40,6 +42,12 @@ $params = [];
 if ($statusFilter !== '' && in_array($statusFilter, ['Новая', 'Идет обучение', 'Обучение завершено'], true)) {
     $where .= ' AND a.status = ?';
     $params[] = $statusFilter;
+}
+
+$validCourseIds = array_column($courses, 'id');
+if ($courseFilter !== '' && in_array((int)$courseFilter, $validCourseIds, true)) {
+    $where .= ' AND a.course_id = ?';
+    $params[] = (int)$courseFilter;
 }
 
 $countSql = "SELECT COUNT(*) FROM applications a JOIN users u ON u.id = a.user_id JOIN courses c ON c.id = a.course_id $where";
@@ -79,6 +87,7 @@ function sortLink(string $field, string $label, string $currentSort, string $cur
 
 $queryBase = [
     'status' => $statusFilter,
+    'course_id' => $courseFilter,
     'sort' => $sort,
     'order' => $order,
 ];
@@ -89,8 +98,10 @@ require dirname(__DIR__) . '/includes/header.php';
 ?>
 <section class="card admin-card slide-up">
     <div class="cabinet-head">
-        <div>
-            <h2>Заявки пользователей</h2>
+        <div class="cabinet-intro">
+            <div class="card-head">
+                <h2>Заявки пользователей</h2>
+            </div>
             <p class="subtitle">Всего: <?= $total ?></p>
         </div>
         <a href="/admin/logout.php" class="btn btn-secondary">Выход</a>
@@ -98,9 +109,9 @@ require dirname(__DIR__) . '/includes/header.php';
 
     <form method="get" class="admin-filters">
         <div class="field">
-            <label for="status">Фильтр по статусу</label>
-            <select id="status" name="status" onchange="this.form.submit()">
-                <option value="">Все статусы</option>
+            <label for="status">Статус</label>
+            <select id="status" name="status">
+                <option value="">Все</option>
                 <?php foreach (['Новая', 'Идет обучение', 'Обучение завершено'] as $statusOption): ?>
                     <option value="<?= escape($statusOption) ?>" <?= $statusFilter === $statusOption ? 'selected' : '' ?>>
                         <?= escape($statusOption) ?>
@@ -108,8 +119,34 @@ require dirname(__DIR__) . '/includes/header.php';
                 <?php endforeach; ?>
             </select>
         </div>
-        <input type="hidden" name="sort" value="<?= escape($sort) ?>">
-        <input type="hidden" name="order" value="<?= escape($order) ?>">
+        <div class="field">
+            <label for="course_id">Курс</label>
+            <select id="course_id" name="course_id">
+                <option value="">Все</option>
+                <?php foreach ($courses as $course): ?>
+                    <option value="<?= (int)$course['id'] ?>" <?= $courseFilter === (string)$course['id'] ? 'selected' : '' ?>>
+                        <?= escape($course['name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="field">
+            <label for="sort">Сортировка</label>
+            <select id="sort" name="sort">
+                <option value="created_at" <?= $sort === 'created_at' ? 'selected' : '' ?>>По дате создания</option>
+                <option value="status" <?= $sort === 'status' ? 'selected' : '' ?>>По статусу</option>
+                <option value="course" <?= $sort === 'course' ? 'selected' : '' ?>>По курсу</option>
+                <option value="user" <?= $sort === 'user' ? 'selected' : '' ?>>По пользователю</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="order">Порядок</label>
+            <select id="order" name="order">
+                <option value="DESC" <?= $order === 'DESC' ? 'selected' : '' ?>>По убыванию</option>
+                <option value="ASC" <?= $order === 'ASC' ? 'selected' : '' ?>>По возрастанию</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-secondary">Применить</button>
     </form>
 
     <?php if (!$applications): ?>
@@ -135,7 +172,8 @@ require dirname(__DIR__) . '/includes/header.php';
                             <td>#<?= (int)$app['id'] ?></td>
                             <td>
                                 <strong><?= escape($app['full_name']) ?></strong><br>
-                                <span class="muted"><?= escape($app['login']) ?></span>
+                                <span class="muted"><?= escape($app['login']) ?></span><br>
+                                <span class="muted"><?= escape($app['phone']) ?></span>
                             </td>
                             <td><?= escape($app['course_name']) ?></td>
                             <td><?= escape(dateFromStorage($app['start_date'])) ?></td>
@@ -167,6 +205,11 @@ require dirname(__DIR__) . '/includes/header.php';
 
         <?php if ($totalPages > 1): ?>
             <nav class="pagination">
+                <?php if ($page > 1): ?>
+                    <?php $prevQuery = array_merge($queryBase, ['page' => $page - 1]); ?>
+                    <a class="page-link" href="?<?= http_build_query($prevQuery) ?>" aria-label="Предыдущая страница">&#10094;</a>
+                <?php endif; ?>
+                <span class="pagination-info">Страница <?= $page ?> из <?= $totalPages ?></span>
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                     <?php
                     $query = array_merge($queryBase, ['page' => $i]);
@@ -174,6 +217,10 @@ require dirname(__DIR__) . '/includes/header.php';
                     ?>
                     <a class="page-link<?= $active ?>" href="?<?= http_build_query($query) ?>"><?= $i ?></a>
                 <?php endfor; ?>
+                <?php if ($page < $totalPages): ?>
+                    <?php $nextQuery = array_merge($queryBase, ['page' => $page + 1]); ?>
+                    <a class="page-link" href="?<?= http_build_query($nextQuery) ?>" aria-label="Следующая страница">&#10095;</a>
+                <?php endif; ?>
             </nav>
         <?php endif; ?>
     <?php endif; ?>

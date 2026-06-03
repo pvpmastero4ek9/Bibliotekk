@@ -58,13 +58,14 @@ a:hover {
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .site-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
+    gap: 14px;
+    padding: 18px 16px;
     background: var(--blue);
     color: var(--white);
 }
@@ -74,36 +75,66 @@ a:hover {
 }
 
 .logo {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
     object-fit: cover;
     border: 2px solid var(--white);
 }
 
+.brand-badge {
+    display: inline-block;
+    margin-bottom: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.22);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
 .header-text h1 {
-    font-size: 24px;
+    font-size: 36px;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .header-text p {
     font-size: 12px;
     font-weight: 300;
-    opacity: 0.9;
+    opacity: 0.95;
+    margin-top: 2px;
 }
 
 .site-main {
     flex: 1;
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
 .site-footer {
-    padding: 16px;
+    padding: 18px 16px;
     text-align: center;
     background: var(--gray-light);
+    color: var(--text);
     font-size: 12px;
     font-weight: 300;
+}
+
+.site-footer a {
+    color: var(--blue-dark);
+}
+
+.footer-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 8px !important;
 }
 
 .site-footer p {
@@ -125,7 +156,21 @@ a:hover {
 }
 
 .auth-card {
-    margin-top: 12px;
+    margin-top: 0;
+}
+
+.admin-auth-card {
+    border-color: var(--gray);
+}
+
+.card-head {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-light);
+}
+
+.card-head h2 {
+    margin-bottom: 0;
 }
 
 h2 {
@@ -140,6 +185,15 @@ h3 {
     font-weight: 500;
     margin: 20px 0 12px;
     color: var(--blue-dark);
+}
+
+.section-label {
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue-dark);
+    margin-bottom: 8px;
 }
 
 .subtitle {
@@ -238,6 +292,10 @@ a.btn-secondary:focus {
     color: var(--blue-dark);
 }
 
+.btn.pressed {
+    transform: scale(0.98);
+}
+
 .btn-block {
     width: 100%;
     margin-top: 4px;
@@ -296,6 +354,7 @@ a.btn-secondary:focus {
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--gray-light);
+    border: 2px solid var(--gray);
 }
 
 .slider-track {
@@ -330,8 +389,8 @@ a.btn-secondary:focus {
     width: 36px;
     height: 36px;
     border: none;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.85);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.92);
     color: var(--blue-dark);
     cursor: pointer;
     font-size: 18px;
@@ -384,6 +443,15 @@ a.btn-secondary:focus {
     margin-bottom: 8px;
 }
 
+.cabinet-intro .card-head {
+    margin-bottom: 6px;
+    padding-bottom: 8px;
+}
+
+.cabinet-intro .subtitle {
+    margin-bottom: 0;
+}
+
 .cabinet-actions {
     display: flex;
     gap: 8px;
@@ -398,6 +466,7 @@ a.btn-secondary:focus {
 
 .application-item {
     border: 1px solid var(--gray-light);
+    border-left: 4px solid var(--blue);
     border-radius: 12px;
     padding: 14px;
     background: #fafbfc;
@@ -478,7 +547,28 @@ a.btn-secondary:focus {
 }
 
 .admin-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
     margin-bottom: 16px;
+}
+
+.admin-filters .field {
+    flex: 1 1 140px;
+    min-width: 120px;
+}
+
+.admin-filters .btn {
+    flex: 0 0 auto;
+}
+
+.pagination-info {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 13px;
+    color: #555;
 }
 
 .admin-table-wrap {
@@ -504,6 +594,7 @@ a.btn-secondary:focus {
     background: var(--gray-light);
     font-weight: 500;
     white-space: nowrap;
+    color: var(--blue-dark);
 }
 
 .sort-link {
@@ -599,8 +690,26 @@ a.btn-secondary:focus {
     }
 }
 
+.page-auth .site-main,
+.page-admin-login .site-main {
+    justify-content: center;
+}
+
+.page-cabinet .hero-banner {
+    border: 2px solid var(--gray);
+}
+
+.page-cabinet .hero-image {
+    max-height: 140px;
+}
+
 @media (min-width: 391px) {
     body {
-        padding: 16px 0;
+        padding: 20px 0;
+    }
+
+    .app-shell {
+        border-radius: 20px;
+        min-height: calc(100vh - 40px);
     }
 }

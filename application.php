@@ -62,7 +62,9 @@ $bodyClass = 'page-application';
 require __DIR__ . '/includes/header.php';
 ?>
 <section class="card auth-card slide-up">
-    <h2>Оформление заявки</h2>
+    <div class="card-head">
+        <h2>Оформление заявки</h2>
+    </div>
     <p class="subtitle">Выберите курс, дату начала и способ оплаты</p>
     <form method="post" class="form">
         <div class="field">

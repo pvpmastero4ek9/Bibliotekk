@@ -68,7 +68,8 @@ require __DIR__ . '/includes/header.php';
     <img src="/assets/hero.png" alt="Обучение онлайн" class="hero-image">
 </section>
 
-<section class="slider-section slide-up" data-slider>
+<section class="slider-section slide-up" data-slider aria-label="Популярные курсы">
+    <p class="section-label">Направления обучения</p>
     <div class="slider">
         <div class="slider-track">
             <div class="slide active"><img src="/images/image%20(1).jpeg" alt="Курс 1"></div>
@@ -84,8 +85,10 @@ require __DIR__ . '/includes/header.php';
 
 <section class="card cabinet-card slide-up">
     <div class="cabinet-head">
-        <div>
-            <h2>Личный кабинет</h2>
+        <div class="cabinet-intro">
+            <div class="card-head">
+                <h2>Личный кабинет</h2>
+            </div>
             <p class="subtitle">Здравствуйте, <?= escape($user['full_name']) ?></p>
         </div>
         <div class="cabinet-actions">

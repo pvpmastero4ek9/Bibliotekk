@@ -39,7 +39,9 @@ $bodyClass = 'page-auth';
 require __DIR__ . '/includes/header.php';
 ?>
 <section class="card auth-card slide-up">
-    <h2>Вход</h2>
+    <div class="card-head">
+        <h2>Вход</h2>
+    </div>
     <p class="subtitle">Войдите в личный кабинет</p>
     <?php if ($flashSuccess): ?>
         <div class="alert alert-success"><?= escape($flashSuccess) ?></div>
@@ -59,5 +61,6 @@ require __DIR__ . '/includes/header.php';
         <button type="submit" class="btn btn-primary btn-block">Войти</button>
     </form>
     <p class="auth-switch">Еще не зарегистрированы? <a href="/register.php">Регистрация</a></p>
+    <p class="auth-switch"><a href="/admin/login.php">Панель администратора</a></p>
 </section>
 <?php require __DIR__ . '/includes/footer.php'; ?>

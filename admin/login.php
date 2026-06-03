@@ -28,8 +28,10 @@ $pageTitle = 'Администратор — Учусь.РФ';
 $bodyClass = 'page-auth page-admin-login';
 require dirname(__DIR__) . '/includes/header.php';
 ?>
-<section class="card auth-card slide-up">
-    <h2>Панель администратора</h2>
+<section class="card auth-card admin-auth-card slide-up">
+    <div class="card-head">
+        <h2>Панель администратора</h2>
+    </div>
     <p class="subtitle">Вход для администратора системы</p>
     <?php if ($error): ?>
         <div class="alert alert-error"><?= escape($error) ?></div>

@@ -10,6 +10,7 @@ $bodyClass = $bodyClass ?? '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="#007bff">
     <title><?= escape($pageTitle) ?></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -20,8 +21,9 @@ $bodyClass = $bodyClass ?? '';
             <img src="/assets/20220922_logo.jpg" alt="Учусь.РФ" class="logo">
         </a>
         <div class="header-text">
+            <span class="brand-badge">Онлайн-курсы</span>
             <h1>Учусь.РФ</h1>
-            <p>Дистанционное обучение</p>
+            <p>Повышение квалификации и переподготовка</p>
         </div>
     </header>
     <main class="site-main">
