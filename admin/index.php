@@ -141,7 +141,7 @@ require dirname(__DIR__) . '/includes/header.php';
                             <td><?= escape(dateFromStorage($app['start_date'])) ?></td>
                             <td><?= escape($app['payment_method']) ?></td>
                             <td>
-                                <span class="status-badge status-<?= escape(preg_replace('/\s+/', '-', mb_strtolower($app['status']))) ?>">
+                                <span class="status-badge status-<?= escape(statusClassSlug($app['status'])) ?>">
                                     <?= escape($app['status']) ?>
                                 </span>
                             </td>

@@ -218,12 +218,23 @@ h3 {
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.35);
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus,
+a.btn-primary:hover,
+a.btn-primary:focus {
     background: var(--blue-dark);
+    color: var(--white);
 }
 
 .btn-secondary {
     background: var(--gray-light);
+    color: var(--blue-dark);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+a.btn-secondary:hover,
+a.btn-secondary:focus {
     color: var(--blue-dark);
 }
 

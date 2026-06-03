@@ -65,9 +65,33 @@ function validatePhone(string $phone): ?string
     return null;
 }
 
+function utf8Length(string $value): int
+{
+    if (function_exists('mb_strlen')) {
+        return mb_strlen($value, 'UTF-8');
+    }
+    return preg_match_all('/./u', $value, $matches) ? count($matches[0]) : strlen($value);
+}
+
+function statusClassSlug(string $status): string
+{
+    $map = [
+        'Новая' => 'новая',
+        'Идет обучение' => 'идет-обучение',
+        'Обучение завершено' => 'обучение-завершено',
+    ];
+    if (isset($map[$status])) {
+        return $map[$status];
+    }
+    $normalized = function_exists('mb_strtolower')
+        ? mb_strtolower($status, 'UTF-8')
+        : $status;
+    return preg_replace('/\s+/', '-', $normalized) ?? $normalized;
+}
+
 function validateFullName(string $name): ?string
 {
-    if (mb_strlen(trim($name)) < 3) {
+    if (utf8Length(trim($name)) < 3) {
         return 'Укажите полное ФИО';
     }
     return null;

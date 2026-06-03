@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['review_application_id
         $reviewErrors['general'] = 'Отзыв можно оставить после изменения статуса администратором';
     } elseif ($rating < 1 || $rating > 5) {
         $reviewErrors['general'] = 'Выберите оценку от 1 до 5';
-    } elseif (mb_strlen($text) < 10) {
+    } elseif (utf8Length($text) < 10) {
         $reviewErrors['general'] = 'Текст отзыва должен содержать не менее 10 символов';
     } else {
         $exists = $db->prepare('SELECT id FROM reviews WHERE application_id = ?');
@@ -113,7 +113,7 @@ require __DIR__ . '/includes/header.php';
                 <article class="application-item">
                     <div class="application-top">
                         <strong><?= escape($app['course_name']) ?></strong>
-                        <span class="status-badge status-<?= escape(preg_replace('/\s+/', '-', mb_strtolower($app['status']))) ?>"><?= escape($app['status']) ?></span>
+                        <span class="status-badge status-<?= escape(statusClassSlug($app['status'])) ?>"><?= escape($app['status']) ?></span>
                     </div>
                     <p>Дата начала: <?= escape(dateFromStorage($app['start_date'])) ?></p>
                     <p>Оплата: <?= escape($app['payment_method']) ?></p>
